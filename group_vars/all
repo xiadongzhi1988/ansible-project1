@@ -1,0 +1,38 @@
+# create public group
+public_group: www
+public_gid: 1024
+
+# create public user
+public_user: www
+public_uid: 1024
+
+# is nginx?
+is_nginx: false
+
+# is php?
+is_php: false
+
+# rsync variables
+rsync_domain: 172.16.1.0/24
+rsync_auth_user: rsync_backup
+rsync_auth_user_pass: 123
+auth_file: rsync.password
+backup_dir: /backup
+data_dir: /data
+rsync_server: 172.16.1.41
+rsync_module: data
+
+# is ...
+is_proxy: false
+is_rewrite: false
+is_http: false
+is_https: false
+is_web: false
+is_php: false
+
+# key
+crt_name: server.crt
+key_name: server.key
+
+# servername
+server_name: https_proxy_rewrite.wuxing.com

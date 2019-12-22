@@ -1,0 +1,4 @@
+---
+- hosts: ["backup", "nfs", "web", "lb", "db"]
+  roles:
+  - role: base

@@ -1,0 +1,6 @@
+---
+# handlers file for roles/static_web
+- name: Restart nginx
+  systemd:
+    name: nginx
+    state: restarted

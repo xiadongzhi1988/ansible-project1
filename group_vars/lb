@@ -1,0 +1,5 @@
+# is nginx?
+is_nginx: true
+
+# pool name
+pool_name: proxy1

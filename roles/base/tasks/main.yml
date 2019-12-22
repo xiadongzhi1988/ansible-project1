@@ -1,0 +1,33 @@
+---
+# tasks file for roles/base
+- name: Add group
+  group:
+    name: '{{ public_group }}'
+    state: present
+    gid: '{{ public_gid }}'
+- name: Add  user 
+  user:
+    name: '{{ public_user }}'
+    uid: '{{ public_uid }}'
+    group: '{{ public_group }}'
+    shell: /sbin/nologin
+    create_home: no
+- name: install epel
+  yum:
+    name: epel-release
+    state: latest
+- name: Add nginx Yum Repository
+  yum_repository:
+    name: nginx-stable
+    description: nginx-stable Repository
+    file: nginx
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://nginx.org/keys/nginx_signing.key
+  when: is_nginx
+- name: install remi
+  yum:
+    name: https://mirrors.tuna.tsinghua.edu.cn/remi/enterprise/remi-release-7.rpm
+    state: present
+  when: is_php

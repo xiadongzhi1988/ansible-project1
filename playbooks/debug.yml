@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+  - name: ansible_variables
+    debug:
+      msg: '{{ ansible_eth1.ipv4.address }}'
+  - name:
+    file:
+      path: /tmp/{{ ansible_eth1.ipv4.address }}
+      state: directory
+      recurse: yes
+      owner: root
+      group: root
+      mode: 0755

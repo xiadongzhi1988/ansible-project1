@@ -1,0 +1,10 @@
+---
+# vars file for roles/static_web
+is_proxy: true
+is_rewrite: true
+is_http: false
+is_https: true
+is_web: false
+is_php: false
+
+codes: /code/

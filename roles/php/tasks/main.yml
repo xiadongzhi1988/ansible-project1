@@ -1,0 +1,26 @@
+---
+# tasks file for roles/php
+- name: install php
+  yum:
+    name: "{{ packages }}"
+    state: present
+    enablerepo: remi-php71
+  when: is_php
+- name: Config php
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '{{ item.mode }}'
+    owner: '{{ item.owner }}'
+    group: '{{ item.group }}'
+  loop:
+  - { src: php.ini.j2, dest: /etc/php.ini, mode: "0644", owner: root, group: root }
+  - { src: www.conf.j2, dest: /etc/php-fpm.d/www.conf, mode: "0644", owner: root, group: root }
+  notify: Restart php
+  when: is_php
+- name: Start php
+  systemd:
+    name: php-fpm
+    state: started
+    enabled: yes
+  when: is_php

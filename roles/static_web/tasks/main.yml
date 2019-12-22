@@ -1,0 +1,44 @@
+---
+# tasks file for roles/static_web
+- name: copy config file
+  template:
+    src: nginx_template.conf.j2
+    dest: /etc/nginx/conf.d/{{ server_name }}.conf
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Restart nginx
+- name: copy proxy_param
+  copy:
+    src: proxy_params
+    dest: /etc/nginx/proxy_params
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Restart nginx
+  when: is_proxy
+- name: Copy key-crt
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: "0644"
+    owner: root
+    group: root
+  loop:
+  - {src: server.key, dest: /etc/nginx/server.key}
+  - {src: server.crt, dest: /etc/nginx/server.crt}
+  when: is_https
+  notify: Restart nginx
+- name: Start nginx
+  systemd:
+    name: nginx
+    state: started
+- name: Create code dir
+  file:
+    path: '{{ codes }}{{ server_name }}'
+    state: directory
+    recurse: yes
+    owner: '{{ public_user }}'
+    group: '{{ public_group }}'
+    mode: 0755
+  when: is_web

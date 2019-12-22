@@ -1,0 +1,27 @@
+---
+# tasks file for roles/nfs
+- name: Install nfs-utils
+  yum:
+    name: nfs-utils
+    state: latest
+- name: Config nfs-utils
+  template:
+    src: exports.j2
+    dest: /etc/exports
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Restart nfs
+- name: Start nfs
+  systemd:
+    name: nfs
+    state: started
+    enabled: yes
+- name: Create directory
+  file:
+    path: '{{ data_dir }}'
+    state: directory
+    recurse: yes
+    owner: '{{ public_user }}'
+    group: '{{ public_group }}'
+    mode: 0755
