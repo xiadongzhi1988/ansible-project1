@@ -1,8 +1,0 @@
-- hosts: 172.16.1.5
-  vars:
-    nginx_port: 80
-  tasks:
-  - name: copy
-    template:
-      src: test.conf
-      dest: /tmp/test.conf
