@@ -5,7 +5,7 @@
     name: '{{ public_group }}'
     state: present
     gid: '{{ public_gid }}'
-- name: Add  user 
+- name: Add  user
   user:
     name: '{{ public_user }}'
     uid: '{{ public_uid }}'
@@ -31,3 +31,22 @@
     name: https://mirrors.tuna.tsinghua.edu.cn/remi/enterprise/remi-release-7.rpm
     state: present
   when: is_php
+- name: copy hosts
+  copy:
+    src: hosts
+    dest: /etc/hosts
+    mode: "0644"
+    owner: root
+    group: root
+- name: copy sshd_config
+  copy:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Restart sshd
+- name: install nfs-utils
+  yum:
+    name: nfs-utils
+    state: latest
